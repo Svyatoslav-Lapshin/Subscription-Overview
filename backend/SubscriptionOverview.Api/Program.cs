@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using SubscriptionOverview.Api.Data;
+
 namespace SubscriptionOverview
 {
     public class Program
@@ -11,8 +14,8 @@ namespace SubscriptionOverview
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddDbContext<SubscriptionOverviewDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddOpenApi();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
