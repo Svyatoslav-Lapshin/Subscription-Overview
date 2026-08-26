@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SubscriptionOverview.Api.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace SubscriptionOverview.Api.Models
@@ -12,7 +13,11 @@ namespace SubscriptionOverview.Api.Models
         [Required(ErrorMessage = "Service name is required")]
         [MaxLength(100, ErrorMessage = "Service name cannot exceed 100 characters")]
         public string ServiceName { get; set; } = string.Empty;
-        
+
+        // Nullable user because global providers are not connected to a specific user.
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; } 
+
         //Indicates wheter the provider was created by a user or is a predefined provider.
         public bool IsCustom { get; set; }
 

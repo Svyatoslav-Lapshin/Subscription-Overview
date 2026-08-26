@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using SubscriptionOverview.Api.Models.Enums;
+using SubscriptionOverview.Api.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace SubscriptionOverview.Api.Models
@@ -9,7 +10,9 @@ namespace SubscriptionOverview.Api.Models
     [Index(nameof(StartDate))]
     public class Subscription
     {
-        public int Id { get; set; }
+        public int Id { get; set; }  
+        public string UserId { get; set; } = string.Empty;
+        public ApplicationUser User { get; set; } = null!;
 
         //Validates the monetory value using decimal boundaries.
         [Range(typeof(decimal), "0.01", "999999.99", ErrorMessage = "Price must be greater than 0.")]

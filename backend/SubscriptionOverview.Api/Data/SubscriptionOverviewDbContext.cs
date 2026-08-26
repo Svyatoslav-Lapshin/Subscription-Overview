@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SubscriptionOverview.Api.Models;
+using SubscriptionOverview.Api.Models.Identity;
 
 namespace SubscriptionOverview.Api.Data
 {
-    public class SubscriptionOverviewDbContext : DbContext
+    public class SubscriptionOverviewDbContext : IdentityDbContext<ApplicationUser>
     {
 
         public SubscriptionOverviewDbContext(DbContextOptions<SubscriptionOverviewDbContext> options) : base(options)
@@ -37,7 +39,28 @@ namespace SubscriptionOverview.Api.Data
             modelBuilder.Entity<Subscription>()
                         .Property(p => p.Price)
                         .HasPrecision(18, 2);
-                        
+
+
+            modelBuilder.Entity<ApplicationUser>()
+                        .HasMany(c => c.Categories)
+                        .WithOne(u => u.User)
+                        .HasForeignKey(u => u.UserId)
+                         .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ApplicationUser>()
+                       .HasMany(s => s.Subscriptions)
+                       .WithOne(u => u.User)
+                       .HasForeignKey(u => u.UserId)
+                       .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<ApplicationUser>()
+                     .HasMany(u => u.CustomProviders)
+                     .WithOne(u => u.User)
+                     .HasForeignKey(u => u.UserId )
+                     .IsRequired(false)
+                     .OnDelete(DeleteBehavior.NoAction);
+
 
         }
     }
