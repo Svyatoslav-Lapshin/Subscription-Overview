@@ -1,0 +1,12 @@
+﻿namespace SubscriptionOverview.Api.DTOs.Auth
+{
+    public class AuthResponseDto
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        // Represents the exact expiration time of the access token.
+        public DateTimeOffset ExpiresAt { get; set; }
+    }
+}

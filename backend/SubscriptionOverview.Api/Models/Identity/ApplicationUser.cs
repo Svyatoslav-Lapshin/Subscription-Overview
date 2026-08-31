@@ -11,10 +11,9 @@ namespace SubscriptionOverview.Api.Models.Identity
         public string LastName { get; set; } = string.Empty;
 
 
-        public ICollection<Subscription> Subscriptions { get; set; } = new HashSet<Subscription>();
-        public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
-        public ICollection<Provider> CustomProviders { get; set; } = new HashSet<Provider>();
-
+        public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public ICollection<Category> Categories { get; set; } = new List<Category>();
+        public ICollection<Provider> CustomProviders { get; set; } = new List<Provider>();
 
 
     }
