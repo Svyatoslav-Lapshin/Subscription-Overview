@@ -7,8 +7,10 @@ using SubscriptionOverview.Api.Data;
 using SubscriptionOverview.Api.Middleware;
 using SubscriptionOverview.Api.Models.Identity;
 using SubscriptionOverview.Api.Repositories.CategoryRepositories;
+using SubscriptionOverview.Api.Repositories.ProviderRepositories;
 using SubscriptionOverview.Api.Services.Auth;
 using SubscriptionOverview.Api.Services.CategoryServices;
+using SubscriptionOverview.Api.Services.ProviderServices;
 using System.Text;
 
 namespace SubscriptionOverview
@@ -44,6 +46,10 @@ namespace SubscriptionOverview
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+            builder.Services.AddScoped<IProviderService, ProviderService>();
+
+
 
             builder.Services.AddAuthentication(options =>
             {

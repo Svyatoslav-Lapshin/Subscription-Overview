@@ -1,85 +1,93 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SubscriptionOverview.Api.DTOs.CategoriesDto;
+using SubscriptionOverview.Api.DTOs.ProviderDto;
 using SubscriptionOverview.Api.Exceptions;
-using SubscriptionOverview.Api.Services.CategoryServices;
+using SubscriptionOverview.Api.Services.ProviderServices;
 using System.Security.Claims;
 
 namespace SubscriptionOverview.Api.Controllers
 {
-    [ApiController]
-    [Route("api/categories")]
-    [Authorize]
-    public class CategoriesController : ControllerBase
-    {
-        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ICategoryService categoryService)
+    [ApiController]
+    [Route("api/providers")]
+    [Authorize]
+    public class ProvidersController : ControllerBase
+    {
+        private readonly IProviderService _providerService;
+
+        public ProvidersController(IProviderService providerService)
         {
-            _categoryService = categoryService;
+            _providerService = providerService;
         }
 
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAllCategories()
+        public async Task<ActionResult<IEnumerable<ProviderDto>>> GetAllProviders()
         {
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
                 throw new UnauthorizedException("User not authenticated.");
             }
-            var categories = await _categoryService.GetAllCategoriesAsync(userId);
-            return Ok(categories);
-
+            var providers = await _providerService.GetAllProvidersAsync(userId);
+            return Ok(providers);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDto>> GetCategory(int id)
+        public async Task<ActionResult<ProviderDto>> GetProviderById(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
                 throw new UnauthorizedException("User not authenticated.");
             }
-            var category = await _categoryService.GetCategoryByIdAsync(id, userId);
-            
-            return Ok(category);
+
+            var provider = await _providerService.GetProviderByIdAsync(id, userId);
+            if (provider == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(provider);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CategoryDto>> AddCategory([FromBody] CategoryRequestDto categoryDto)
+        public async Task<ActionResult<ProviderDto>> AddProvider([FromBody] ProviderRequestDto providerDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
                 throw new UnauthorizedException("User not authenticated.");
             }
-            
-            var category = await _categoryService.AddAsync(userId, categoryDto);
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+
+            var provider = await _providerService.CreateProviderAsync(userId, providerDto);
+            return CreatedAtAction(nameof(GetProviderById), new { id = provider.Id }, provider);
         }
 
+
         [HttpPut("{id}")]
-        public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] CategoryRequestDto categoryDto)
+        public async Task<ActionResult<ProviderDto>> UpdateProvider(int id, [FromBody] ProviderRequestDto providerDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
                 throw new UnauthorizedException("User not authenticated.");
             }
-            var category = await _categoryService.UpdateAsync(id, userId, categoryDto);
-            return Ok(category);
+            var provider = await _providerService.UpdateProviderAsync(id, userId, providerDto);
+            return Ok(provider);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteProvider(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
                 throw new UnauthorizedException("User not authenticated.");
             }
-            await _categoryService.DeleteAsync(id,userId);
+            await _providerService.DeleteProviderAsync(id, userId);
             return NoContent();
-        }   
+        }
     }
 }
