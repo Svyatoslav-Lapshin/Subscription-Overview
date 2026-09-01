@@ -6,7 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using SubscriptionOverview.Api.Data;
 using SubscriptionOverview.Api.Middleware;
 using SubscriptionOverview.Api.Models.Identity;
+using SubscriptionOverview.Api.Repositories.CategoryRepositories;
 using SubscriptionOverview.Api.Services.Auth;
+using SubscriptionOverview.Api.Services.CategoryServices;
 using System.Text;
 
 namespace SubscriptionOverview
@@ -37,8 +39,11 @@ namespace SubscriptionOverview
 
             }).AddEntityFrameworkStores<SubscriptionOverviewDbContext>()
               .AddSignInManager();
+
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             builder.Services.AddAuthentication(options =>
             {
