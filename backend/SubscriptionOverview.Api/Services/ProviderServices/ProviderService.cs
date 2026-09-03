@@ -16,16 +16,19 @@ namespace SubscriptionOverview.Api.Services.ProviderServices
         public async Task<ProviderDto> CreateProviderAsync(string userId, ProviderRequestDto providerRequest)
         {
             var existingProvider = await _providerRepository.ExistsByNameAsync(providerRequest.ServiceName, userId);
+
             if (existingProvider)
             {
                 throw new ConflictException("A provider with the specified name already exists.");
             }
+
             var provider = new Provider
             {
                 ServiceName = providerRequest.ServiceName,
                 UserId = userId,
                 IsCustom = true
             };
+
             await _providerRepository.AddProviderAsync(provider);
 
             var result = await _providerRepository.SaveChangesAsync();
@@ -74,12 +77,14 @@ namespace SubscriptionOverview.Api.Services.ProviderServices
             {
                 throw new NotFoundException("Provider not found.");
             }
+
             return MapToProviderDto(provider);
         }
 
         public async Task<ProviderDto> UpdateProviderAsync(int id, string userId, ProviderRequestDto providerRequest)
         {
            var provider = await _providerRepository.GetCustomProviderByIdAsync(id, userId);
+
             if (provider == null)
             {
                 throw new NotFoundException("Provider not found.");
@@ -98,12 +103,16 @@ namespace SubscriptionOverview.Api.Services.ProviderServices
             }
 
             provider.ServiceName = providerRequest.ServiceName;
+
             _providerRepository.UpdateProvider(provider);
+
             var result = await _providerRepository.SaveChangesAsync();
+
             if (!result)
             {
                 throw new InvalidOperationException("Failed to update provider");
             }
+
             return MapToProviderDto(provider);
         }
 

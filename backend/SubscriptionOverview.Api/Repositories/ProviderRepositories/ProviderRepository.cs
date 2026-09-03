@@ -13,7 +13,6 @@ namespace SubscriptionOverview.Api.Repositories.ProviderRepositories
             _context = context;
         }
 
-
         public async Task AddProviderAsync(Provider provider)
         {
             await _context.Providers.AddAsync(provider);
@@ -29,26 +28,22 @@ namespace SubscriptionOverview.Api.Repositories.ProviderRepositories
             return await _context.Providers.AnyAsync(p => p.ServiceName == name && ((p.UserId == null && !p.IsCustom) || (p.UserId == userId && p.IsCustom)));
         }
 
-
         public async Task<IEnumerable<Provider>> GetAllProvidersAsync(string userId)  
         {
             return await _context.Providers.AsNoTracking().Where(p =>(p.UserId==null && !p.IsCustom) || (p.UserId == userId && p.IsCustom) ).ToListAsync();
 
         }
-
         public async Task<Provider?> GetCustomProviderByIdAsync(int id, string userId)
         {
 
 
             return await _context.Providers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id && p.UserId == userId && p.IsCustom);
         }
-
         public async Task<Provider?> GetProviderByIdAsync(int id, string userId)
         {
             return await _context.Providers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id && ((p.UserId == null && !p.IsCustom) || (p.UserId == userId && p.IsCustom)));
         }
         
-
         public async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() > 0;

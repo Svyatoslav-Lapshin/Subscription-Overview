@@ -188,10 +188,8 @@ namespace SubscriptionOverview.Api.Services.SubscriptionServices
             var subscriptions = await _repository.GetAllSubscriptionsAsync(userId);
 
             var today = DateOnly.FromDateTime(DateTime.Now);
-            var activeSubscriptions = subscriptions
-                                     .Where(s => s.StartDate <= today &&
-                                     (s.EndDate == null || s.EndDate >= today))
-                                     .ToList();
+
+            var activeSubscriptions = subscriptions.Where(s => s.StartDate <= today && (s.EndDate == null || s.EndDate >= today)).ToList();
 
             var totalMonthlyCost = activeSubscriptions.Sum(s => CalculateMonthlyEquivalent(s.Price, s.BillingInterval));
 
@@ -207,9 +205,7 @@ namespace SubscriptionOverview.Api.Services.SubscriptionServices
 
             return summary;
 
-
         }
-
 
         private static SubscriptionDto MapToSubscriptionDto(Subscription subscription)
         {

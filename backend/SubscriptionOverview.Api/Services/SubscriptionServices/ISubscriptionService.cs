@@ -9,7 +9,6 @@ namespace SubscriptionOverview.Api.Services.SubscriptionServices
         Task<SubscriptionDto> AddAsync(string userId, SubscriptionRequestDto subscriptionDto);
         Task<SubscriptionDto> UpdateAsync(int id, string userId, SubscriptionRequestDto subscriptionDto);
         Task<bool> DeleteAsync(int id, string userId);
-
         Task<SubscriptionSummaryDto> GetSummaryAsync(string userId);   
 
     }

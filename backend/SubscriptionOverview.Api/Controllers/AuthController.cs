@@ -8,7 +8,7 @@ namespace SubscriptionOverview.Api.Controllers
     [Route("api/auth")]
     [ApiController]
 
-    public class AuthController:ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
 
@@ -21,16 +21,16 @@ namespace SubscriptionOverview.Api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterDto registerDto)
         {
-          
-                var result =await _authService.RegisterAsync(registerDto);
-            
-                return Ok(result);
-           
+
+            var result = await _authService.RegisterAsync(registerDto);
+
+            return Ok(result);
+
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<AuthResponseDto>> Login([FromBody]  LoginDto loginDto)
+        public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto loginDto)
         {
 
             var result = await _authService.LoginAsync(loginDto);

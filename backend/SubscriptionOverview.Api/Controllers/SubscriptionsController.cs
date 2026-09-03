@@ -7,7 +7,6 @@ using System.Security.Claims;
 
 namespace SubscriptionOverview.Api.Controllers
 {
-
     [ApiController]
     [Route("api/subscriptions")]
     [Authorize]

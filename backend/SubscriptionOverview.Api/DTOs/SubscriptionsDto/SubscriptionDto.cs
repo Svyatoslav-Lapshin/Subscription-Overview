@@ -1,13 +1,10 @@
-﻿
-using SubscriptionOverview.Api.Models.Enums;
+﻿using SubscriptionOverview.Api.Models.Enums;
 
 namespace SubscriptionOverview.Api.DTOs.SubscriptionsDto
 {
     public class SubscriptionDto
     {
-
         public int Id { get; set; }
-
         public decimal Price { get; set; }
         public BillingInterval BillingInterval { get; set; }
         public decimal MonthlyCost { get; set; }

@@ -14,19 +14,21 @@ namespace SubscriptionOverview.Api.Services.CategoryServices
             _categoryRepository = categoryRepository;
         }
 
-
         public async Task<CategoryDto> AddAsync(string userId, CategoryRequestDto categoryDto)
         {
             var existingCategory = await _categoryRepository.ExistsByNameAsync(categoryDto.CategoryName, userId);
+
             if (existingCategory)
             {
                 throw new ConflictException("Category with the same name already exists");
             }
+
             var category = new Category
             {
                 CategoryName = categoryDto.CategoryName,
                 UserId = userId
             };
+
             await _categoryRepository.AddAsync(category);
             var result = await _categoryRepository.SaveChangesAsync();
 
@@ -103,7 +105,6 @@ namespace SubscriptionOverview.Api.Services.CategoryServices
                 throw new ConflictException("Category with the same name already exists");
             }
 
-
             category.CategoryName = categoryDto.CategoryName;
             _categoryRepository.Update(category);
             var result = await _categoryRepository.SaveChangesAsync();
@@ -115,10 +116,6 @@ namespace SubscriptionOverview.Api.Services.CategoryServices
             return MapToCategoryDto(category);
 
         }
-
-
-
-
         private static CategoryDto MapToCategoryDto(Category category)
         {
             return new CategoryDto
