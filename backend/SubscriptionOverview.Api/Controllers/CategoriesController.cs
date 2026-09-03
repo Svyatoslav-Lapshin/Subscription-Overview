@@ -32,7 +32,7 @@ namespace SubscriptionOverview.Api.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -58,7 +58,7 @@ namespace SubscriptionOverview.Api.Controllers
             return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] CategoryRequestDto categoryDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -70,7 +70,7 @@ namespace SubscriptionOverview.Api.Controllers
             return Ok(category);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

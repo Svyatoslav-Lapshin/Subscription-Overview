@@ -34,7 +34,7 @@ namespace SubscriptionOverview.Api.Controllers
             return Ok(providers);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<ProviderDto>> GetProviderById(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -44,11 +44,7 @@ namespace SubscriptionOverview.Api.Controllers
             }
 
             var provider = await _providerService.GetProviderByIdAsync(id, userId);
-            if (provider == null)
-            {
-                return NotFound();
-            }
-
+           
             return Ok(provider);
         }
 
@@ -66,7 +62,7 @@ namespace SubscriptionOverview.Api.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<ProviderDto>> UpdateProvider(int id, [FromBody] ProviderRequestDto providerDto)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -78,7 +74,7 @@ namespace SubscriptionOverview.Api.Controllers
             return Ok(provider);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
