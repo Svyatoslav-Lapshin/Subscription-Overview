@@ -6,5 +6,8 @@ namespace SubscriptionOverview.Api.Services.Auth
     {
 
         TokenResult CreateToken(ApplicationUser user);
+        string GenerateRefreshToken();
+        string HashRefreshToken(string refreshToken);
+
     }
 }

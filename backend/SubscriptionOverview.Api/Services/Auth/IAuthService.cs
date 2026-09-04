@@ -5,7 +5,10 @@ namespace SubscriptionOverview.Api.Services.Auth
     public interface IAuthService
     {
 
-        Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
-        Task<AuthResponseDto> LoginAsync(LoginDto dto);
+        Task<AuthResult> RegisterAsync(RegisterDto dto);
+        Task<AuthResult> LoginAsync(LoginDto dto);
+
+        Task<AuthResult> RefreshTokenAsync(string refreshToken);
+        Task LogoutAsync(string refreshToken);
     }
 }

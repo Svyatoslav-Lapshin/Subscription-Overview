@@ -2,6 +2,7 @@
 using SubscriptionOverview.Api.Models.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SubscriptionOverview.Api.Services.Auth
@@ -68,6 +69,22 @@ namespace SubscriptionOverview.Api.Services.Auth
             return new TokenResult { 
                 AccessToken = accessToken,
                 ExpiresAt = expiresAt };
+
+        }
+
+        public string GenerateRefreshToken()
+        {
+         
+            var randomBytes = RandomNumberGenerator.GetBytes(64);
+            return Convert.ToBase64String(randomBytes);
+
+        }
+
+        public string HashRefreshToken(string refreshToken)
+        {
+           
+            var hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken));
+            return Convert.ToBase64String(hashedBytes);
 
         }
     }

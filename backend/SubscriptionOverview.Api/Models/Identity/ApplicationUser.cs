@@ -14,6 +14,7 @@ namespace SubscriptionOverview.Api.Models.Identity
         public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
         public ICollection<Category> Categories { get; set; } = new List<Category>();
         public ICollection<Provider> CustomProviders { get; set; } = new List<Provider>();
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
 
     }

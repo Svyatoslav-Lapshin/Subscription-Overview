@@ -18,6 +18,7 @@ namespace SubscriptionOverview.Api.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Provider> Providers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,6 +61,17 @@ namespace SubscriptionOverview.Api.Data
                      .HasForeignKey(u => u.UserId )
                      .IsRequired(false)
                      .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ApplicationUser>()
+                        .HasMany(u => u.RefreshTokens)
+                        .WithOne(u => u.User)
+                        .HasForeignKey(u => u.UserId)
+                        .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<RefreshToken>()
+                        .HasIndex(r => r.TokenHash)
+                        .IsUnique();
 
 
         }
