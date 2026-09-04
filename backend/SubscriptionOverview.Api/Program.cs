@@ -45,6 +45,19 @@ namespace SubscriptionOverview
             }).AddEntityFrameworkStores<SubscriptionOverviewDbContext>()
               .AddSignInManager();
 
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("FrontEndPolicy", policy =>
+                {
+                    policy
+                          .WithOrigins("http://localhost:5173")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials();
+                });
+            });
+
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
 
@@ -91,8 +104,8 @@ namespace SubscriptionOverview
             {
                 app.MapOpenApi();
             }
-
             app.UseHttpsRedirection();
+            app.UseCors("FrontEndPolicy");
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();

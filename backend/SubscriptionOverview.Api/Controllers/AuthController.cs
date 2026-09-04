@@ -86,7 +86,7 @@ namespace SubscriptionOverview.Api.Controllers
                 HttpOnly = true,
                 Expires = expiresAt,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Path= "/api/auth"
             };
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
