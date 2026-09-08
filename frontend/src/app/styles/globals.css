@@ -1,0 +1,275 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/outfit";
+/*---break---*/
+@custom-variant dark (&:is(.dark *));
+
+/*Global Styles*/
+
+@theme {
+  /*Primary Colors*/
+  --color-primary-hover: #c84836;
+  --color-primary-light: #fde8e4;
+
+  /*Background Colors & Surfaces*/
+  --color-cream: #f5ede0;
+  --color-blush: #f9e0d9;
+
+  /*Border Colors*/
+  --color-border-subtle: #ede5dc;
+
+  /*Semantic Colors*/
+  --color-success: #1e996d;
+  --color-success-background: #e0f4e8;
+
+  --color-warning: #c47828;
+  --color-warning-background: #fef3e4;
+
+  --color-error: #e0554d;
+  --color-error-background: #fde8e4;
+
+  /*Subscription Categories*/
+  --color-category-streaming: #f83b28;
+  --color-category-music: #c2318a;
+  --color-category-software: #1a82cc;
+  --color-category-cloud: #00a96e;
+  --color-category-productivity: #d4890a;
+  --color-category-gaming: #7b35c8;
+  --color-category-other: #8a7a70;
+
+  /* Extended Category Palette */
+  --color-category-lime: #6bb800;
+  --color-category-teal: #0a9490;
+  --color-category-cyan: #0aacdc;
+  --color-category-indigo: #4248cc;
+  --color-category-orange: #e86414;
+  --color-category-rose: #e83668;
+}
+
+@theme inline {
+  /* Typography */
+  --font-sans: "Outfit Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+
+  /* Main colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Aliases for our own component naming */
+  --color-bg: var(--background);
+  --color-surface: var(--card);
+  --color-text-primary: var(--foreground);
+  --color-text-secondary: var(--muted-foreground);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Background & text */
+  --background: #faf8f5;
+  --foreground: #1c1917;
+
+  /* Cards */
+  --card: #ffffff;
+  --card-foreground: #1c1917;
+
+  /* Popovers / dropdowns */
+  --popover: #ffffff;
+  --popover-foreground: #1c1917;
+
+  /* Brand */
+  --primary: #e0554d;
+  --primary-foreground: #ffffff;
+
+  /* Secondary surfaces */
+  --secondary: #f5ede0;
+  --secondary-foreground: #1c1917;
+
+  /* Muted content */
+  --muted: #f5ede0;
+  --muted-foreground: #78716c;
+
+  /* Accent / active navigation */
+  --accent: #f9e0d9;
+  --accent-foreground: #e0554d;
+
+  /* Error / destructive actions */
+  --destructive: #e0554d;
+
+  /* Inputs & borders */
+  --border: #e5d9cf;
+  --input: #e5d9cf;
+  --ring: #e0554d;
+
+  /* Chart palette */
+  --chart-1: #f83b28;
+  --chart-2: #c2318a;
+  --chart-3: #1a82cc;
+  --chart-4: #00a96e;
+  --chart-5: #d4890a;
+
+  /* Global radius */
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1c1917;
+
+  --sidebar-primary: #e0554d;
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: #f9e0d9;
+  --sidebar-accent-foreground: #e0554d;
+
+  --sidebar-border: #e5d9cf;
+  --sidebar-ring: #e0554d;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  --chart-1: #f83b28;
+  --chart-2: #c2318a;
+  --chart-3: #1a82cc;
+  --chart-4: #00a96e;
+  --chart-5: #d4890a;
+
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+
+  --sidebar-primary: #e0554d;
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  /* Makes width/height include padding and border,
+     so element sizes are easier to control. */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Default shadcn border and focus ring colors. */
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* Makes the app fill the full viewport height. */
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Apply Outfit globally. */
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    margin: 0;
+    @apply bg-background text-foreground;
+  }
+
+  /* Form elements inherit the same font as the rest of the app. */
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  /* Makes buttons feel clickable by default. */
+  button {
+    cursor: pointer;
+  }
+
+  /* Hide Edge's built-in password reveal.
+     We can use our own show/hide password button. */
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+}
