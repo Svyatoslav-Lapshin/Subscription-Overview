@@ -137,7 +137,7 @@ export default function RegisterPage() {
           </CardTitle>
           <CardDescription>Enter your details to get started</CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} noValidate className="gtrid gap-6 pt-2">
           <CardContent>
             <div className="grid gap-2">
               <Label htmlFor="firstName">First Name</Label>
@@ -224,7 +224,7 @@ export default function RegisterPage() {
               )}
             </div>
           </CardContent>
-          <CardFooter className="bg-card border-t-0 flex-col gap-4">
+          <CardFooter className="bg-card border-t-0 flex-col gap-4 mt-4">
             <Button type="submit" className="w-full h-[2.625rem] text-base">
               Create Account
             </Button>
