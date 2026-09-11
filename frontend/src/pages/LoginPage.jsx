@@ -9,17 +9,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import LogoIcon from "../assets/LogoICon.svg?react";
 import { validateEmail } from "@/lib/validateEmail";
+import { loginUser } from "@/api/authApi";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
+  /*Login form data*/
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const { setAccessToken } = useAuth();
+
+  /*Form errors*/
   const [errors, setErrors] = useState({});
+  /*Update input values*/
   const handleInput = (e) => {
     const { name, value } = e.target;
 
@@ -33,7 +42,7 @@ export default function LoginPage() {
       [name]: "",
     }));
   };
-
+  /*Validate login fields*/
   const validateField = (name, value) => {
     if (!value.trim()) {
       return "This field is required";
@@ -46,7 +55,7 @@ export default function LoginPage() {
     return "";
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -69,7 +78,29 @@ export default function LoginPage() {
       return;
     }
 
-    console.log(credentials);
+    const loginData = {
+      email: credentials.email,
+      password: credentials.password,
+    };
+    /*Send login request*/
+    try {
+      const response = await loginUser(loginData);
+      /*Save access token*/
+      setAccessToken(response.accessToken);
+      /*Go to dashboard*/
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      /*Handle invalid login*/
+      if (error.response?.status === 401) {
+        setErrors((prev) => ({
+          ...prev,
+          password: "Invalid email or password",
+        }));
+        return;
+      }
+
+      console.log("Login error:", error);
+    }
   };
 
   return (
@@ -100,6 +131,7 @@ export default function LoginPage() {
                 value={credentials.email}
                 onChange={handleInput}
                 required
+                aria-invalid={!!errors.email}
               />
               {errors.email && (
                 <p className="text-sm text-destructive"> {errors.email}</p>
@@ -119,6 +151,7 @@ export default function LoginPage() {
                 value={credentials.password}
                 onChange={handleInput}
                 required
+                aria-invalid={!!errors.password}
               />
               {errors.password && (
                 <p className="text-sm text-destructive">{errors.password}</p>
