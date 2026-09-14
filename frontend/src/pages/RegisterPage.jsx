@@ -15,6 +15,7 @@ import { useState } from "react";
 import { validateEmail } from "@/lib/validateEmail";
 import { registerUser } from "@/api/authApi";
 import { useAuth } from "@/context/AuthContext";
+import { tokenStore } from "@/lib/tokenStore";
 
 export default function RegisterPage() {
   /*Register form data*/
@@ -133,6 +134,7 @@ export default function RegisterPage() {
     try {
       const response = await registerUser(registerData);
       setAccessToken(response.accessToken);
+      tokenStore.set(response.accessToken);
       navigate("/dashboard", { replace: true });
     } catch (error) {
       /*Handle existing email*/

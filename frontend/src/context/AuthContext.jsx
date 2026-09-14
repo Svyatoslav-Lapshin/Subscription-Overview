@@ -1,4 +1,5 @@
 import { refreshToken, logoutUser } from "@/api/authApi";
+import { tokenStore } from "@/lib/tokenStore";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
@@ -12,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await logoutUser();
     setAccessToken(null);
+    tokenStore.clear();
   };
 
   useEffect(() => {
@@ -20,8 +22,10 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await refreshToken();
         setAccessToken(response.accessToken);
+        tokenStore.set(response.accessToken);
       } catch {
         setAccessToken(null);
+        tokenStore.clear();
       } finally {
         setIsAuthLoading(false);
       }

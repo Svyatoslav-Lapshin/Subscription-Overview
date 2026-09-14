@@ -15,6 +15,7 @@ import LogoIcon from "../assets/LogoICon.svg?react";
 import { validateEmail } from "@/lib/validateEmail";
 import { loginUser } from "@/api/authApi";
 import { useAuth } from "@/context/AuthContext";
+import { tokenStore } from "@/lib/tokenStore";
 
 export default function LoginPage() {
   /*Login form data*/
@@ -87,6 +88,7 @@ export default function LoginPage() {
       const response = await loginUser(loginData);
       /*Save access token*/
       setAccessToken(response.accessToken);
+      tokenStore.set(response.accessToken);
       /*Go to dashboard*/
       navigate("/dashboard", { replace: true });
     } catch (error) {
@@ -99,7 +101,7 @@ export default function LoginPage() {
         return;
       }
 
-      console.log("Login error:", error);
+      console.error("Login error:", error);
     }
   };
 
