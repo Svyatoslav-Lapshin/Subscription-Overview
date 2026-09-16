@@ -1,5 +1,3 @@
-import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { getDashboardSummary } from "@/api/dashboardApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +8,6 @@ import { ChartContainer } from "@/components/ui/chart";
 
 export default function DashboardPage() {
   /*Dashboard data*/
-  const { logout } = useAuth();
   const [summary, setSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -70,8 +67,15 @@ export default function DashboardPage() {
 
     return "";
   };
- 
-/*Calculate average monthly cost*/
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+  /*Calculate average monthly cost*/
   const averagePerSubscription =
     summary.activeSubscriptionsCount > 0
       ? Math.round(
