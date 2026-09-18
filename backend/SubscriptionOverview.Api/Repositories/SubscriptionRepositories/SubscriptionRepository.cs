@@ -51,7 +51,7 @@ namespace SubscriptionOverview.Api.Repositories.SubscriptionRepositories
 
         public void UpdateSubscription(Subscription subscription)
         {
-            _context.Subscriptions.Update(subscription);
+           _context.Entry(subscription).State= EntityState.Modified;
         }
     }
 }
