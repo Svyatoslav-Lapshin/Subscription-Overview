@@ -5,13 +5,21 @@ import { getUserSubscriptions } from "@/api/subscriptionsApi";
 import { Badge } from "@/components/ui/badge";
 import { Pie, PieChart } from "recharts";
 import { ChartContainer } from "@/components/ui/chart";
-
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import {
+  getCategoryColor,
+  getBillingIntervalText,
+  isSubscriptionActive,
+} from "@/lib/subscriptionUtils";
 export default function DashboardPage() {
   /*Dashboard data*/
   const [summary, setSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [subscriptions, setSubscriptions] = useState([]);
+  const navigate = useNavigate();
   /*Load dashboard data */
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -29,8 +37,12 @@ export default function DashboardPage() {
     };
     loadDashboardData();
   }, []);
+  const activeSubscriptions = subscriptions.filter(isSubscriptionActive);
+
+  const visibleSubscriptions = activeSubscriptions.slice(0, 6);
+
   /*Calculate coast by category */
-  const categoryTotals = subscriptions.reduce((totals, subscription) => {
+  const categoryTotals = activeSubscriptions.reduce((totals, subscription) => {
     const categoryName = subscription.categoryName;
     if (categoryName) {
       totals[categoryName] =
@@ -39,18 +51,6 @@ export default function DashboardPage() {
     }
     return totals;
   }, {});
-  /*Get category color*/
-  const getCategoryColor = (category) => {
-    if (category === "Streaming") return "var(--color-category-streaming)";
-    if (category === "Music") return "var(--color-category-music)";
-    if (category === "Software") return "var(--color-category-software)";
-    if (category === "Cloud") return "var(--color-category-cloud)";
-    if (category === "Productivity")
-      return "var(--color-category-productivity)";
-    if (category === "Gaming") return "var(--color-category-gaming)";
-
-    return "var(--color-category-other)";
-  };
   /*Prepare chart data*/
   const categoryData = Object.entries(categoryTotals).map(
     ([category, value]) => ({
@@ -59,14 +59,6 @@ export default function DashboardPage() {
       fill: getCategoryColor(category),
     }),
   );
-  /*Format billing interval*/
-  const getBillingIntervalText = (billingInterval) => {
-    if (billingInterval === 1) return "per month";
-    if (billingInterval === 2) return "per quarter";
-    if (billingInterval === 3) return "per year";
-
-    return "";
-  };
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -82,6 +74,7 @@ export default function DashboardPage() {
           summary.totalMonthlyPayments / summary.activeSubscriptionsCount,
         )
       : 0;
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
@@ -180,12 +173,25 @@ export default function DashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader className="text-lg font-semibold">
-            <CardTitle>Active subscriptions </CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between text-lg font-semibold">
+            <div>
+              <CardTitle>Active subscriptions </CardTitle>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => navigate("/subscriptions")}
+                className="h-auto shrink-0 gap-1 p-0 text-sm font-medium text-primary hover:bg-transparent hover:text-primary-hover"
+              >
+                <span>View all</span>
+                <ArrowRight className="size-4 shrink-0" />
+              </Button>
+            </div>
           </CardHeader>
 
           <CardContent>
-            {subscriptions.map((subscription) => (
+            {visibleSubscriptions.map((subscription) => (
               <div
                 key={subscription.id}
                 className="mt-3 flex items-center gap-3 justify-between rounded-xl border p-3"

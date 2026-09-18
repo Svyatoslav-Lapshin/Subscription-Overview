@@ -16,6 +16,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  getCategoryColor,
+  getBillingIntervalText,
+  isSubscriptionActive,
+  isSubscriptionEnded,
+} from "@/lib/subscriptionUtils";
 export default function SubscriptionPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -53,40 +59,16 @@ export default function SubscriptionPage() {
     loadSubscriptions();
   }, []);
   /*Filte subscrtion (will remove to the backend)*/
-  const today = new Date().toISOString().split("T")[0];
-  const activeSubscriptions = subscriptions.filter(
-    (subscription) => !subscription.endDate || subscription.endDate >= today,
-  );
-  const endedSubscriptions = subscriptions.filter(
-    (subscription) => subscription.endDate && subscription.endDate < today,
-  );
+
+  const activeSubscriptions = subscriptions.filter(isSubscriptionActive);
+
+  const endedSubscriptions = subscriptions.filter(isSubscriptionEnded);
 
   /*Calculate monthly cost*/
   const totalMonthlyCost = activeSubscriptions.reduce(
     (total, subscription) => total + subscription.monthlyCost,
     0,
   );
-
-  /*Get category color*/
-  const getCategoryColor = (category) => {
-    if (category === "Streaming") return "var(--color-category-streaming)";
-    if (category === "Music") return "var(--color-category-music)";
-    if (category === "Software") return "var(--color-category-software)";
-    if (category === "Cloud") return "var(--color-category-cloud)";
-    if (category === "Productivity")
-      return "var(--color-category-productivity)";
-    if (category === "Gaming") return "var(--color-category-gaming)";
-
-    return "var(--color-category-other)";
-  };
-  /*Format billing interval*/
-  const getBillingIntervalText = (billingInterval) => {
-    if (billingInterval === 1) return "per month";
-    if (billingInterval === 2) return "per quarter";
-    if (billingInterval === 3) return "per year";
-
-    return "";
-  };
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -122,8 +104,8 @@ export default function SubscriptionPage() {
         <CardContent>
           {subscriptions.map((subscription) => {
             /*Check subscription status*/
-            const isActive =
-              !subscription.endDate || subscription.endDate >= today;
+            const isActive = isSubscriptionActive(subscription);
+            const isEnded = isSubscriptionEnded(subscription);
             return (
               <div
                 key={subscription.id}
@@ -157,10 +139,12 @@ export default function SubscriptionPage() {
                       className={
                         isActive
                           ? "rounded-full bg-success-background text-[0.625rem] font-medium text-success"
-                          : "rounded-full text-[0.625rem] font-medium"
+                          : isEnded
+                            ? "rounded-full text-[0.625rem] font-medium"
+                            : "rounded-full bg-warning-background text-[0.625rem] font-medium text-warning"
                       }
                     >
-                      {isActive ? "Active" : "Ended"}
+                      {isActive ? "Active" : isEnded ? "Ended" : "Upcoming"}
                     </Badge>
                   </div>
                 </div>
@@ -202,7 +186,7 @@ export default function SubscriptionPage() {
               <span className="font-medium text-foreground">
                 {subscriptionToDelete?.serviceName}
               </span>{" "}
-              ? This action cannot be undine
+              ? This action cannot be undone
             </DialogDescription>
           </DialogHeader>
 
