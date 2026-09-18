@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
+import { getSubscriptionById, editSubscription } from "@/api/subscriptionsApi";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { createProvider, getProviders } from "@/api/providersApi";
+import { createCategory, getCategories } from "@/api/categoriesApi";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Select,
@@ -7,15 +13,18 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
-import { createProvider, getProviders } from "@/api/providersApi";
-import { createCategory, getCategories } from "@/api/categoriesApi";
 import { Input } from "@/components/ui/input";
-import { createSubscription } from "@/api/subscriptionsApi";
-
-export default function AddSubscriptionPage() {
-  /*Subscription form data*/
+export default function EditSubscriptionPage() {
+  const navigate = useNavigate();
+  const [isCustomProvider, setIsCustomProvider] = useState(false);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customProviderName, setCustomProviderName] = useState("");
+  const [customCategoryName, setCustomCategoryName] = useState("");
+  const [providers, setProviders] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [subscription, setSubscription] = useState({
     price: "",
     billingInterval: "",
@@ -25,31 +34,31 @@ export default function AddSubscriptionPage() {
     endDate: "",
   });
 
-  /*Form options*/
-  const [providers, setProviders] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [isCustomProvider, setIsCustomProvider] = useState(false);
-  const [isCustomCategory, setIsCustomCategory] = useState(false);
-  const [customProviderName, setCustomProviderName] = useState("");
-  const [customCategoryName, setCustomCategoryName] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  /*Load providers and categories*/
   useEffect(() => {
-    const loadOptions = async () => {
+    const loadSubscription = async () => {
       try {
+        const subscriptionResponse = await getSubscriptionById(id);
         const providerResponse = await getProviders();
         const categoryResponse = await getCategories();
-
+        setSubscription({
+          price: subscriptionResponse.price.toString(),
+          billingInterval: subscriptionResponse.billingInterval.toString(),
+          categoryId: subscriptionResponse.categoryId.toString(),
+          providerId: subscriptionResponse.providerId.toString(),
+          startDate: subscriptionResponse.startDate,
+          endDate: subscriptionResponse.endDate || "",
+        });
         setProviders(providerResponse);
         setCategories(categoryResponse);
       } catch (error) {
-        console.error("Form options error:", error);
+        console.error("Subscription error:", error);
+        setError("Failed to load subscription");
+      } finally {
+        setIsLoading(false);
       }
     };
-    loadOptions();
-  }, []);
+    loadSubscription();
+  }, [id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -116,7 +125,7 @@ export default function AddSubscriptionPage() {
         categoryId = newCategory.id;
       }
 
-      const newSubscription = {
+      const updateSubscription = {
         price: Number(subscription.price),
         billingInterval: Number(subscription.billingInterval),
         categoryId: Number(categoryId),
@@ -125,11 +134,12 @@ export default function AddSubscriptionPage() {
         endDate: subscription.endDate || null,
       };
 
-      await createSubscription(newSubscription);
+      await editSubscription(id, updateSubscription);
 
       navigate("/subscriptions");
     } catch (error) {
-      console.error("Create subscription error:", error);
+      console.error("Update subscription error:", error);
+      setError("Failed to update subscription");
     }
   };
 
@@ -140,6 +150,15 @@ export default function AddSubscriptionPage() {
   const selectedCategory = categories.find(
     (category) => category.id.toString() === subscription.categoryId,
   );
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center p-6">
       <div className="w-full max-w-md">
@@ -153,12 +172,13 @@ export default function AddSubscriptionPage() {
             <ChevronLeft className="size-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-semibold">Add subscription</h1>
+            <h1 className="text-2xl font-semibold">Edit subscription</h1>
             <p className="text-sm text-muted-foreground">
-              Track a new recurring cost
+              Update recurring cost
             </p>
           </div>
         </div>
+
         <form onSubmit={handleSubmit}>
           <Card className="mt-6 gap-0 rounded-xl border-border bg-card p-5 shadow-none">
             <CardHeader className="p-0">
@@ -166,7 +186,7 @@ export default function AddSubscriptionPage() {
                 Provider
               </p>
             </CardHeader>
-            <CardContent className="p-0">
+            <CardContent className="p-0 pt-4">
               {/*Provider selection*/}
               <div>
                 <label className=" mb-1.5 block text-sm font-medium text-foreground">
@@ -297,6 +317,7 @@ export default function AddSubscriptionPage() {
               </div>
             </CardContent>
           </Card>
+
           <Card className="mt-6">
             {/*Billing details*/}
             <CardHeader>
@@ -434,7 +455,7 @@ export default function AddSubscriptionPage() {
               type="submit"
               className="h-12 w-full rounded-xl bg-primary text-sm font-medium text-primary-foreground hover:bg-primary-hover"
             >
-              Add subscription
+              Save Changes
             </Button>
           </div>
         </form>

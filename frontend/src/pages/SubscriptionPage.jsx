@@ -1,17 +1,42 @@
-import { getUserSubscriptions } from "@/api/subscriptionsApi";
+import {
+  deleteSubscription,
+  getUserSubscriptions,
+} from "@/api/subscriptionsApi";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 export default function SubscriptionPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [subscriptions, setSubscriptions] = useState([]);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [subscriptionToDelete, setSubscriptionToDelte] = useState(null);
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteSubscription(id);
+      setSubscriptions((currentSubscriptions) =>
+        currentSubscriptions.filter((subscription) => subscription.id !== id),
+      );
+
+      setIsDeleteDialogOpen(false);
+      setSubscriptionToDelte(null);
+    } catch (error) {
+      console.error("Delete subscription error", error);
+    }
+  };
   /*Load subscriptions*/
   useEffect(() => {
     const loadSubscriptions = async () => {
@@ -144,14 +169,19 @@ export default function SubscriptionPage() {
                   <Button
                     type="button"
                     className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
-                    onClick={() => console.log("Edit:", subscription.id)}
+                    onClick={() =>
+                      navigate(`/subscriptions/${subscription.id}/edit`)
+                    }
                   >
                     <Pencil className="w-4 h-4" />
                   </Button>
                   <Button
                     type="button"
                     className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-destructive"
-                    onClick={() => console.log("Delete:", subscription.id)}
+                    onClick={() => {
+                      setSubscriptionToDelte(subscription);
+                      setIsDeleteDialogOpen(true);
+                    }}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -161,6 +191,41 @@ export default function SubscriptionPage() {
           })}
         </CardContent>
       </Card>
+
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>Delete subscription?</DialogTitle>
+
+            <DialogDescription>
+              Are you sure you want to delete{" "}
+              <span className="font-medium text-foreground">
+                {subscriptionToDelete?.serviceName}
+              </span>{" "}
+              ? This action cannot be undine
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-11 min-w-24 rounded-lg px-5 text-sm font-medium"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              className="h-11 min-w-24 rounded-lg px-5 text-sm font-medium"
+              onClick={() => handleDelete(subscriptionToDelete.id)}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

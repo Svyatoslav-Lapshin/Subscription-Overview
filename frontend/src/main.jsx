@@ -10,6 +10,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import AddSubscriptionPage from "./pages/AddSubscriptionPage";
+import EditSubscriptionPage from "./pages/EditSubscriptionPage";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -41,6 +42,14 @@ createRoot(document.getElementById("root")).render(
               element={
                 <ProtectedRoute>
                   <AddSubscriptionPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/subscriptions/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <EditSubscriptionPage />
                 </ProtectedRoute>
               }
             />
