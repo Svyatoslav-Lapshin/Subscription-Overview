@@ -98,7 +98,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between  gap-4">
         <h1 className=" text-2xl font-semibold ">Dashboard</h1>
         <div className="grid h-10 w-[17.5rem] grid-cols-3 gap-1 rounded-xl border border-input  p-1">
           <Button

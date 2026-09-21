@@ -125,7 +125,7 @@ export default function SubscriptionPage() {
                   <p className="truncate text-sm font-semibold">
                     {subscription.serviceName}
                   </p>
-                  <p className="text-xs font-semibold">
+                  <p className="truncate text-xs text-muted-foreground">
                     {subscription.categoryName} ·{" "}
                     {getBillingIntervalText(subscription.billingInterval)}
                   </p>
