@@ -25,7 +25,7 @@ export default function LoginPage() {
   });
 
   const navigate = useNavigate();
-  const { setAccessToken } = useAuth();
+  const { setAccessToken, setUser } = useAuth();
 
   /*Form errors*/
   const [errors, setErrors] = useState({});
@@ -89,6 +89,11 @@ export default function LoginPage() {
       /*Save access token*/
       setAccessToken(response.accessToken);
       tokenStore.set(response.accessToken);
+      setUser({
+        firstName: response.firstName,
+        lastName: response.lastName,
+        email: response.email,
+      });
       /*Go to dashboard*/
       navigate("/dashboard", { replace: true });
     } catch (error) {

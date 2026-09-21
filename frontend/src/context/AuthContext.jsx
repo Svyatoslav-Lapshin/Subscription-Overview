@@ -7,6 +7,8 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   /*Current access token*/
   const [accessToken, setAccessToken] = useState(null);
+  /*Current user*/
+  const [user, setUser] = useState(null);
   /*Auth check loading*/
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   /*Logout current user*/
@@ -14,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     await logoutUser();
     setAccessToken(null);
     tokenStore.clear();
+    setUser(null);
   };
 
   useEffect(() => {
@@ -23,9 +26,15 @@ export const AuthProvider = ({ children }) => {
         const response = await refreshToken();
         setAccessToken(response.accessToken);
         tokenStore.set(response.accessToken);
+        setUser({
+          firstName: response.firstName,
+          lastName: response.lastName,
+          email: response.email,
+        });
       } catch {
         setAccessToken(null);
         tokenStore.clear();
+        setUser(null);
       } finally {
         setIsAuthLoading(false);
       }
@@ -36,7 +45,14 @@ export const AuthProvider = ({ children }) => {
   return (
     /*Share auth data*/
     <AuthContext.Provider
-      value={{ accessToken, setAccessToken, isAuthLoading, logout }}
+      value={{
+        accessToken,
+        user,
+        setUser,
+        setAccessToken,
+        isAuthLoading,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

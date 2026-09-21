@@ -28,7 +28,7 @@ export default function RegisterPage() {
   });
   /*Form errors*/
   const [errors, setErrors] = useState({});
-  const { setAccessToken } = useAuth();
+  const { setAccessToken, setUser: setAuthUser } = useAuth();
   const navigate = useNavigate();
   /*Update input values*/
   const handleInput = (e) => {
@@ -135,6 +135,11 @@ export default function RegisterPage() {
       const response = await registerUser(registerData);
       setAccessToken(response.accessToken);
       tokenStore.set(response.accessToken);
+      setAuthUser({
+        firstName: response.firstName,
+        lastName: response.lastName,
+        email: response.email,
+      });
       navigate("/dashboard", { replace: true });
     } catch (error) {
       /*Handle existing email*/

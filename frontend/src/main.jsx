@@ -11,6 +11,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import AddSubscriptionPage from "./pages/AddSubscriptionPage";
 import EditSubscriptionPage from "./pages/EditSubscriptionPage";
+import AuthenticatedLayout from "./components/layout/AuthenticatedLayout";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -21,38 +22,24 @@ createRoot(document.getElementById("root")).render(
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
-              path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <DashboardPage />
+                  <AuthenticatedLayout />
                 </ProtectedRoute>
               }
-            />
-            <Route
-              path="/subscriptions"
-              element={
-                <ProtectedRoute>
-                  <SubscriptionPage />
-                </ProtectedRoute>
-              }
-            />
+            >
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/subscriptions" element={<SubscriptionPage />} />
 
-            <Route
-              path="/subscriptions/add"
-              element={
-                <ProtectedRoute>
-                  <AddSubscriptionPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/subscriptions/:id/edit"
-              element={
-                <ProtectedRoute>
-                  <EditSubscriptionPage />
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/subscriptions/add"
+                element={<AddSubscriptionPage />}
+              />
+              <Route
+                path="/subscriptions/:id/edit"
+                element={<EditSubscriptionPage />}
+              />
+            </Route>
           </Routes>
         </BrowserRouter>
       </AuthProvider>

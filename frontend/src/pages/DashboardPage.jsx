@@ -19,6 +19,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [subscriptions, setSubscriptions] = useState([]);
+  const [selectedPeriod, setSelectedPeriod] = useState("monthly");
   const navigate = useNavigate();
   /*Load dashboard data */
   useEffect(() => {
@@ -40,17 +41,28 @@ export default function DashboardPage() {
   const activeSubscriptions = subscriptions.filter(isSubscriptionActive);
 
   const visibleSubscriptions = activeSubscriptions.slice(0, 6);
+  const getSubscriptionCost = (subscription) => {
+    if (selectedPeriod === "monthly") {
+      return subscription.monthlyCost;
+    }
 
-  /*Calculate coast by category */
+    if (selectedPeriod === "quarterly") {
+      return subscription.yearlyCost / 4;
+    }
+
+    return subscription.yearlyCost;
+  };
+  /*Calculate cost by category*/
   const categoryTotals = activeSubscriptions.reduce((totals, subscription) => {
     const categoryName = subscription.categoryName;
     if (categoryName) {
       totals[categoryName] =
         /*Look if we have value or we take 0 as a value */
-        (totals[categoryName] || 0) + subscription.monthlyCost;
+        (totals[categoryName] || 0) + getSubscriptionCost(subscription);
     }
     return totals;
   }, {});
+
   /*Prepare chart data*/
   const categoryData = Object.entries(categoryTotals).map(
     ([category, value]) => ({
@@ -67,28 +79,70 @@ export default function DashboardPage() {
   if (error) {
     return <p>{error}</p>;
   }
-  /*Calculate average monthly cost*/
+
+  if (!summary) {
+    return null;
+  }
+  const periodTotal =
+    selectedPeriod === "monthly"
+      ? summary.totalMonthlyPayments
+      : selectedPeriod === "quarterly"
+        ? summary.totalYearlyPayments / 4
+        : summary.totalYearlyPayments;
+
+  /*Calculate average cost*/
   const averagePerSubscription =
     summary.activeSubscriptionsCount > 0
-      ? Math.round(
-          summary.totalMonthlyPayments / summary.activeSubscriptionsCount,
-        )
+      ? Math.round(periodTotal / summary.activeSubscriptionsCount)
       : 0;
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className=" text-2xl font-semibold ">Dashboard</h1>
+        <div className="grid h-10 w-[17.5rem] grid-cols-3 gap-1 rounded-xl border border-input  p-1">
+          <Button
+            type="button"
+            variant={selectedPeriod === "monthly" ? "default" : "ghost"}
+            onClick={() => setSelectedPeriod("monthly")}
+            className="h-full rounded-lg px-4 text-xs font-medium"
+          >
+            Monthly
+          </Button>
+
+          <Button
+            type="button"
+            variant={selectedPeriod === "quarterly" ? "default" : "ghost"}
+            onClick={() => setSelectedPeriod("quarterly")}
+            className="h-full rounded-lg px-4 text-xs font-medium"
+          >
+            Quarterly
+          </Button>
+
+          <Button
+            type="button"
+            variant={selectedPeriod === "yearly" ? "default" : "ghost"}
+            onClick={() => setSelectedPeriod("yearly")}
+            className="h-full rounded-lg px-4 text-xs font-medium"
+          >
+            Yearly
+          </Button>
+        </div>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
         <Card className="gap-0 rounded-xl border-primary bg-primary p-5 text-primary-foreground">
           <CardHeader className="p-0">
             <CardTitle className="text-xs font-medium uppercase tracking-tight">
-              Monthly cost
+              {selectedPeriod === "monthly"
+                ? "Monthly cost"
+                : selectedPeriod === "quarterly"
+                  ? "Quarterly cost"
+                  : "Yearly cost"}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <p className="pt-2 text-3xl font-bold">
-              {summary.totalMonthlyPayments} kr
-            </p>
+            <p className="pt-2 text-3xl font-bold">{periodTotal} kr</p>
             <p className="pt-2 text-xs opacity-80">
               {summary.activeSubscriptionsCount} active
             </p>
@@ -134,7 +188,14 @@ export default function DashboardPage() {
             <p className="pt-2 text-3xl font-bold">
               {averagePerSubscription} kr
             </p>
-            <p className="pt-2 text-xs text-muted-foreground">per month</p>
+            <p className="pt-2 text-xs text-muted-foreground">
+              per{" "}
+              {selectedPeriod === "monthly"
+                ? "month"
+                : selectedPeriod === "quarterly"
+                  ? "quarter"
+                  : "year"}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -143,7 +204,12 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>Cost by category</CardTitle>
             <p className="text-xs text-muted-foreground">
-              Monthly, active only
+              {selectedPeriod === "monthly"
+                ? "Monthly"
+                : selectedPeriod === "quarterly"
+                  ? "Quarterly"
+                  : "Yearly"}
+              , active only
             </p>
           </CardHeader>
           <ChartContainer config={{}} className="mx-auto  h-[15.625rem] w-full">
@@ -216,7 +282,9 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1">
-                  <p className="font-semibold">{subscription.price} kr</p>
+                  <p className="font-semibold">
+                    {getSubscriptionCost(subscription)} kr
+                  </p>
                   <Badge
                     variant="secondary"
                     className="rounded-full bg-success-background text-[0.625rem] font-medium text-success"
