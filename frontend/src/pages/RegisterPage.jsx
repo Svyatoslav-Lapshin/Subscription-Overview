@@ -276,7 +276,14 @@ export default function RegisterPage() {
           </CardFooter>
         </form>
       </Card>
-      <p className="mt-6 text-sm text-muted-foreground "> ← Back to home</p>
+      <div className="mt-6 text-center">
+        <Link
+          to="/"
+          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          ← Back to home
+        </Link>
+      </div>
     </div>
   );
 }

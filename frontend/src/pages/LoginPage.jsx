@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import LogoIcon from "../assets/LogoICon.svg?react";
+import LogoIcon from "@/assets/LogoICon.svg?react";
 import { validateEmail } from "@/lib/validateEmail";
 import { loginUser } from "@/api/authApi";
 import { useAuth } from "@/context/AuthContext";
@@ -179,7 +179,15 @@ export default function LoginPage() {
           </CardFooter>
         </form>
       </Card>
-      <p className="mt-6 text-sm text-muted-foreground "> ← Back to home</p>
+
+      <div className="mt-6 text-center">
+        <Link
+          to="/"
+          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          ← Back to home
+        </Link>
+      </div>
     </div>
   );
 }

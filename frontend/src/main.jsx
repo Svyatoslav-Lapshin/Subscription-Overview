@@ -12,6 +12,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import AddSubscriptionPage from "./pages/AddSubscriptionPage";
 import EditSubscriptionPage from "./pages/EditSubscriptionPage";
 import AuthenticatedLayout from "./components/layout/AuthenticatedLayout";
+import LandingPage from "./pages/LandingPage";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
