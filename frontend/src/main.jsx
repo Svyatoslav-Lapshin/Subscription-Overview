@@ -13,6 +13,7 @@ import AddSubscriptionPage from "./pages/AddSubscriptionPage";
 import EditSubscriptionPage from "./pages/EditSubscriptionPage";
 import AuthenticatedLayout from "./components/layout/AuthenticatedLayout";
 import LandingPage from "./pages/LandingPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -42,6 +43,8 @@ createRoot(document.getElementById("root")).render(
                 element={<EditSubscriptionPage />}
               />
             </Route>
+
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
