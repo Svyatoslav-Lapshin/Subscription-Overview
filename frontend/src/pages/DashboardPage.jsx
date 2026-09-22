@@ -11,7 +11,6 @@ import { ArrowRight } from "lucide-react";
 import {
   getCategoryColor,
   getBillingIntervalText,
-  isSubscriptionActive,
 } from "@/lib/subscriptionUtils";
 export default function DashboardPage() {
   /*Dashboard data*/
@@ -38,7 +37,9 @@ export default function DashboardPage() {
     };
     loadDashboardData();
   }, []);
-  const activeSubscriptions = subscriptions.filter(isSubscriptionActive);
+  const activeSubscriptions = subscriptions.filter(
+    (subscription) => subscription.subscriptionsStatus === 2,
+  );
 
   const visibleSubscriptions = activeSubscriptions.slice(0, 6);
   const getSubscriptionCost = (subscription) => {

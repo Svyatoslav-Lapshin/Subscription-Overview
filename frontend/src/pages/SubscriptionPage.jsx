@@ -19,8 +19,6 @@ import {
 import {
   getCategoryColor,
   getBillingIntervalText,
-  isSubscriptionActive,
-  isSubscriptionEnded,
 } from "@/lib/subscriptionUtils";
 export default function SubscriptionPage() {
   const navigate = useNavigate();
@@ -58,11 +56,15 @@ export default function SubscriptionPage() {
     };
     loadSubscriptions();
   }, []);
-  /*Filte subscrtion (will remove to the backend)*/
 
-  const activeSubscriptions = subscriptions.filter(isSubscriptionActive);
+  /*Filter subscriptions by status*/
+  const activeSubscriptions = subscriptions.filter(
+    (subscription) => subscription.subscriptionsStatus === 2,
+  );
 
-  const endedSubscriptions = subscriptions.filter(isSubscriptionEnded);
+  const endedSubscriptions = subscriptions.filter(
+    (subscription) => subscription.subscriptionsStatus === 3,
+  );
 
   /*Calculate monthly cost*/
   const totalMonthlyCost = activeSubscriptions.reduce(
@@ -104,8 +106,8 @@ export default function SubscriptionPage() {
         <CardContent>
           {subscriptions.map((subscription) => {
             /*Check subscription status*/
-            const isActive = isSubscriptionActive(subscription);
-            const isEnded = isSubscriptionEnded(subscription);
+            const isActive = subscription.subscriptionsStatus === 2;
+            const isEnded = subscription.subscriptionsStatus === 3;
             return (
               <div
                 key={subscription.id}

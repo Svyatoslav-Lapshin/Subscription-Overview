@@ -16,18 +16,3 @@ export function getBillingIntervalText(billingInterval) {
 
   return "";
 }
-
-export function isSubscriptionActive(subscription) {
-  const today = new Date().toISOString().split("T")[0];
-
-  return (
-    subscription.startDate <= today &&
-    (!subscription.endDate || subscription.endDate >= today)
-  );
-}
-
-export function isSubscriptionEnded(subscription) {
-  const today = new Date().toISOString().split("T")[0];
-
-  return subscription.endDate && subscription.endDate < today;
-}
