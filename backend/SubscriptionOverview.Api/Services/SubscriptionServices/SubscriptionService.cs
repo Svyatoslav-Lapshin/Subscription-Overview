@@ -222,10 +222,27 @@ namespace SubscriptionOverview.Api.Services.SubscriptionServices
                 ServiceName = subscription.Provider.ServiceName,
                 StartDate = subscription.StartDate,
                 EndDate = subscription.EndDate,
+                SubscriptionsStatus=GetSubscriptionsStatus(subscription.StartDate,subscription.EndDate)
 
             };
         }
 
+
+        private static SubscriptionsStatus GetSubscriptionsStatus(DateOnly startDate, DateOnly? endDate)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Now);
+          
+            if (startDate>today)
+            {
+                return SubscriptionsStatus.Upcoming;
+            }
+
+            if (endDate.HasValue && endDate.Value < today) {
+                return SubscriptionsStatus.Ended;
+            }
+
+            return SubscriptionsStatus.Active;
+        }
 
         private static decimal CalculateMonthlyEquivalent(decimal price, BillingInterval billingInterval)
         {
