@@ -4,7 +4,7 @@ import MobileBottomNav from "./MobileBottomNav";
 
 export default function AuthenticatedLayout() {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className=" min-h-screen bg-background md:flex">
       <Sidebar />
 
       <main className="min-w-0 flex-1 pb-24 md:pb-0">

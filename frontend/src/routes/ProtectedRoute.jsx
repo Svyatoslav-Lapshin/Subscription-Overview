@@ -1,8 +1,8 @@
 import { useAuth } from "@/context/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 /*Its main task is to check whether the user has permission to view the page and, if not, to redirect them to another page (for example, the login page).*/
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute() {
   const { accessToken, isAuthLoading } = useAuth();
 
   /*Wait for auth check*/
@@ -14,5 +14,5 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <Outlet />;
 }

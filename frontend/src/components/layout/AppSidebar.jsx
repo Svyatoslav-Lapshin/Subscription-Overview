@@ -20,7 +20,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden flex h-screen w-56 shrink-0 flex-col border-r border-border bg-card">
+    <aside className="hidden h-screen w-56 shrink-0 flex-col border-r border-border bg-card md:flex">
       {/*Logo*/}
       <div className="flex h-14 items-center gap-2.5 border-b border-border justify-center">
         <LogoIcon className="size-7 shrink-0 " />
