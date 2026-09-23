@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SubscriptionOverview.Api.Data;
 
@@ -11,9 +12,11 @@ using SubscriptionOverview.Api.Data;
 namespace SubscriptionOverview.Api.Migrations
 {
     [DbContext(typeof(SubscriptionOverviewDbContext))]
-    partial class SubscriptionOverviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260922065700_MakeCategoriesGlobal")]
+    partial class MakeCategoriesGlobal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,43 +187,6 @@ namespace SubscriptionOverview.Api.Migrations
                         .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryName = "Streaming"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryName = "Music"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryName = "Software"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryName = "Cloud"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryName = "Productivity"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryName = "Gaming"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryName = "Other"
-                        });
                 });
 
             modelBuilder.Entity("SubscriptionOverview.Api.Models.Identity.ApplicationUser", b =>
@@ -319,127 +285,11 @@ namespace SubscriptionOverview.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceName")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NULL");
+                    b.HasIndex("ServiceName");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("ServiceName", "UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
                     b.ToTable("Providers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsCustom = false,
-                            ServiceName = "Netflix"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsCustom = false,
-                            ServiceName = "Disney+"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsCustom = false,
-                            ServiceName = "HBO Max"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsCustom = false,
-                            ServiceName = "YouTube Premium"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsCustom = false,
-                            ServiceName = "Spotify"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsCustom = false,
-                            ServiceName = "Apple Music"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IsCustom = false,
-                            ServiceName = "YouTube Music"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IsCustom = false,
-                            ServiceName = "Microsoft 365"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IsCustom = false,
-                            ServiceName = "Adobe Creative Cloud"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            IsCustom = false,
-                            ServiceName = "JetBrains"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            IsCustom = false,
-                            ServiceName = "Google One"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            IsCustom = false,
-                            ServiceName = "Dropbox"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            IsCustom = false,
-                            ServiceName = "iCloud+"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            IsCustom = false,
-                            ServiceName = "Notion"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            IsCustom = false,
-                            ServiceName = "Todoist"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            IsCustom = false,
-                            ServiceName = "Xbox Game Pass"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            IsCustom = false,
-                            ServiceName = "PlayStation Plus"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            IsCustom = false,
-                            ServiceName = "GeForce NOW"
-                        });
                 });
 
             modelBuilder.Entity("SubscriptionOverview.Api.Models.RefreshToken", b =>

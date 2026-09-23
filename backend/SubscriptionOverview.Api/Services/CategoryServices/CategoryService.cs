@@ -49,6 +49,11 @@ namespace SubscriptionOverview.Api.Services.CategoryServices
                 throw new NotFoundException("Category not found");
             }
 
+            if (category.UserId == null)
+            {
+                throw new AppValidationException("Predefined categories cannot be deleted.");
+            }
+
             _categoryRepository.Delete(category);
 
             var result = await _categoryRepository.SaveChangesAsync();
@@ -78,7 +83,7 @@ namespace SubscriptionOverview.Api.Services.CategoryServices
                 throw new NotFoundException("Category not found");
 
             }
-
+       
             return MapToCategoryDto(category);
         }
 
@@ -89,6 +94,11 @@ namespace SubscriptionOverview.Api.Services.CategoryServices
             if (category == null)
             {
                 throw new NotFoundException("Category not found");
+            }
+
+            if (category.UserId == null)
+            {
+                throw new AppValidationException("Predefined categories cannot be updated.");
             }
 
             if (string.Equals(category.CategoryName, categoryDto.CategoryName, StringComparison.OrdinalIgnoreCase))

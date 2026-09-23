@@ -36,7 +36,6 @@ namespace SubscriptionOverview.Api.Repositories.ProviderRepositories
         public async Task<Provider?> GetCustomProviderByIdAsync(int id, string userId)
         {
 
-
             return await _context.Providers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id && p.UserId == userId && p.IsCustom);
         }
         public async Task<Provider?> GetProviderByIdAsync(int id, string userId)

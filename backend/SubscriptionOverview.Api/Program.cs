@@ -24,8 +24,9 @@ namespace SubscriptionOverview
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
 
+
+            // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddProblemDetails();
@@ -98,6 +99,18 @@ namespace SubscriptionOverview
             builder.Services.AddAuthorization();
             builder.Services.AddOpenApi();
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var context= services.GetRequiredService<SubscriptionOverviewDbContext>();
+                var userManager= services.GetRequiredService<UserManager<ApplicationUser>>();
+
+                DbInitializer.InitializeAsync(context, userManager, app.Configuration).GetAwaiter().GetResult();
+
+
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

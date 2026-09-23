@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SubscriptionOverview.Api.Models
 {
-    [Index(nameof(ServiceName))]
     public class Provider
     {
         public int Id { get; set; }

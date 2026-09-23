@@ -24,17 +24,17 @@ namespace SubscriptionOverview.Api.Repositories.CategoryRepositories
 
         public async Task<bool> ExistsByNameAsync(string name, string userId)
         {
-            return await _context.Categories.AnyAsync(c => c.CategoryName == name && c.UserId == userId);
+            return await _context.Categories.AnyAsync(c => c.CategoryName == name && (c.UserId == null || c.UserId == userId));
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync(string userId)
         {
-            return await _context.Categories.AsNoTracking().Where(c => c.UserId == userId).ToListAsync();
+            return await _context.Categories.AsNoTracking().Where(c => c.UserId == null || c.UserId == userId).ToListAsync();
         }
 
         public async Task<Category?> GetCategoryByIdAsync(int id, string userId)
         {
-            return await _context.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+            return await _context.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id &&  (c.UserId==null || c.UserId == userId));
         }
 
         public async Task<bool> SaveChangesAsync()
