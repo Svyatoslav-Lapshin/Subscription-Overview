@@ -15,6 +15,7 @@ using SubscriptionOverview.Api.Services.CategoryServices;
 using SubscriptionOverview.Api.Services.ProviderServices;
 using SubscriptionOverview.Api.Services.SubscriptionServices;
 using System.Text;
+using Scalar.AspNetCore;
 
 namespace SubscriptionOverview
 {
@@ -113,11 +114,9 @@ namespace SubscriptionOverview
 
             }
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+          
+            app.MapOpenApi();
+            app.MapScalarApiReference("/scalar");
             app.UseHttpsRedirection();
             app.UseCors("FrontEndPolicy");
             app.UseMiddleware<ExceptionMiddleware>();
