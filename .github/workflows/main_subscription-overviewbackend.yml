@@ -17,16 +17,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
+  	    
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
 
       - name: Build with dotnet
+        working-directory: ./backend
         run: dotnet build --configuration Release
 
       - name: dotnet publish
+        working-directory: ./backend
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
