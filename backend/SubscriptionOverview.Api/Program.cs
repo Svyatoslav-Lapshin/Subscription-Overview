@@ -52,12 +52,13 @@ namespace SubscriptionOverview
                 options.AddPolicy("FrontEndPolicy", policy =>
                 {
                     policy
-                          .WithOrigins("http://localhost:5173")
+                          .WithOrigins(builder.Configuration["Frontend_Domain"])
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials();
                 });
             });
+
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
