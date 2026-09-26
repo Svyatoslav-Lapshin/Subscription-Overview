@@ -8,7 +8,7 @@ on:
     branches:
       - main
       paths:
-       - ./backend
+         - "backend/**"
   workflow_dispatch:
 
 jobs:
@@ -26,11 +26,11 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Build with dotnet
-        working-directory: ./backend
+        working-directory: ./backend/SubscriptionOverview.Api
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        working-directory: ./backend
+        working-directory: ./backend/SubscriptionOverview.Api
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
