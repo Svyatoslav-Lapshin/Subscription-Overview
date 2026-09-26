@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
-
+  const { accessToken } = useAuth();
   return (
     <div className="flex min-h-svh flex-col items-center justify-center px-4 text-center">
       <p className="text-7xl font-bold text-primary">404</p>
@@ -18,10 +19,10 @@ export default function NotFoundPage() {
 
       <Button
         type="button"
-        onClick={() => navigate("/")}
+        onClick={() => navigate(accessToken ? "/dashboard" : "/")}
         className="mt-6 h-10 px-10"
       >
-        Back to home
+        {accessToken ? "Back to dashboard" : "Back to home"}
       </Button>
     </div>
   );

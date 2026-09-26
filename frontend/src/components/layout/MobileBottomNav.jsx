@@ -1,10 +1,17 @@
-import { ReceiptText, LayoutDashboard } from "lucide-react";
+import { ReceiptText, LayoutDashboard, LogOut } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 export default function MobileBottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogOut = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
 
   const isDashboard = location.pathname === "/dashboard";
   const isSubscriptions = location.pathname.startsWith("/subscriptions");
@@ -29,6 +36,16 @@ export default function MobileBottomNav() {
       >
         <ReceiptText className="size-5" />
         Subscriptions
+      </Button>
+
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={handleLogOut}
+        className="flex h-full flex-1 flex-col gap-1 text-muted-foreground"
+      >
+        <LogOut className="size-5" />
+        <span className="text-xs">Logout</span>
       </Button>
     </nav>
   );

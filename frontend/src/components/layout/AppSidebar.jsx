@@ -3,7 +3,6 @@ import { LayoutDashboard, ReceiptText, Plus, LogOut } from "lucide-react";
 import LogoIcon from "@/assets/LogoICon.svg?react";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { logoutUser } from "@/api/authApi";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -11,11 +10,11 @@ export default function Sidebar() {
 
   const isDashboard = location.pathname === "/dashboard";
   const isSubscriptions = location.pathname.startsWith("/subscriptions");
-
+  const { logout } = useAuth();
   const { user } = useAuth();
 
   const handleLogOut = async () => {
-    await logoutUser();
+    await logout();
     navigate("/login", { replace: true });
   };
 
@@ -69,7 +68,7 @@ export default function Sidebar() {
       {/*User*/}
       <div className="flex items-center gap-3 border-t border-border p-4">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary-light text-sm font-semibold text-primary">
-          {user.firstName?.charAt(0).toUpperCase()}
+          {user?.firstName?.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium text-foreground">
