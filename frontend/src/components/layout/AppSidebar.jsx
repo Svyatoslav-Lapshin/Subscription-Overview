@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, ReceiptText, Plus, LogOut } from "lucide-react";
-import LogoIcon from "@/assets/LogoICon.svg?react";
+import LogoIcon from "@/assets/LogoIcon.svg?react";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
 

@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import LogoIcon from "@/assets/LogoICon.svg?react";
+import LogoIcon from "@/assets/LogoIcon.svg?react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { validateEmail } from "@/lib/validateEmail";

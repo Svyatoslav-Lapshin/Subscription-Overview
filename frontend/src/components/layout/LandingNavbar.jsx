@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import LogoIcon from "@/assets/LogoICon.svg?react";
+import LogoIcon from "@/assets/LogoIcon.svg?react";
 
 export default function LandingNavBar() {
   const navigate = useNavigate();

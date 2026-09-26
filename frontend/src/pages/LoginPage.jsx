@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import LogoIcon from "@/assets/LogoICon.svg?react";
+import LogoIcon from "@/assets/LogoIcon.svg?react";
 import { validateEmail } from "@/lib/validateEmail";
 import { loginUser } from "@/api/authApi";
 import { useAuth } from "@/context/AuthContext";
