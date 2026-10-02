@@ -16,6 +16,7 @@ import { validateEmail } from "@/lib/validateEmail";
 import { registerUser } from "@/api/authApi";
 import { useAuth } from "@/context/AuthContext";
 import { tokenStore } from "@/lib/tokenStore";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 export default function RegisterPage() {
   /*Register form data*/
@@ -156,12 +157,15 @@ export default function RegisterPage() {
 
   return (
     <div className="flex flex-col min-h-svh items-center justify-center px-4">
-      <div className="mb-8 flex items-center gap-2">
-        <LogoIcon className="size-8" />
+      <div className="mb-8 flex w-full max-w-[24rem] items-center justify-between">
+        <div className="flex items-center gap-2">
+          <LogoIcon className="size-8" />
 
-        <p className="text-lg font-semibold">
-          Subscription <span className="text-primary">Overview</span>
-        </p>
+          <p className="text-lg font-semibold">
+            Subscription <span className="text-primary">Overview</span>
+          </p>
+        </div>
+        <ThemeToggle />
       </div>
       <Card className="w-full max-w-[25.625rem]">
         <CardHeader>

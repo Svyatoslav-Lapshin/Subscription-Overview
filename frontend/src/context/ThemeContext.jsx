@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useLayoutEffect, useState } from "react";
 
 const ThemeContext = createContext(null);
 
@@ -7,7 +7,7 @@ export function ThemeProvider({ children }) {
     return localStorage.getItem("theme") === "dark";
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const theme = isDark ? "dark" : "light";
     document.documentElement.classList.toggle("dark", isDark);
     localStorage.setItem("theme", theme);
