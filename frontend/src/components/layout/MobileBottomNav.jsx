@@ -2,6 +2,7 @@ import { ReceiptText, LayoutDashboard, LogOut } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 export default function MobileBottomNav() {
   const location = useLocation();
@@ -27,6 +28,11 @@ export default function MobileBottomNav() {
         <LayoutDashboard className="size-5" />
         Dashboard
       </Button>
+
+      <ThemeToggle
+        showLabel
+        className="h-full flex-1 flex-col gap-1 rounded-none text-xs"
+      />
 
       <Button
         type="button"

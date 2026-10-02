@@ -3,6 +3,7 @@ import { LayoutDashboard, ReceiptText, Plus, LogOut } from "lucide-react";
 import LogoIcon from "@/assets/LogoIcon.svg?react";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -56,6 +57,10 @@ export default function Sidebar() {
       </nav>
 
       <div className="px-3 pb-3">
+        <ThemeToggle
+          showLabel
+          className="h-10 w-full justify-start gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+        />
         <Button
           type="button"
           onClick={() => navigate("/subscriptions/add")}

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import LogoIcon from "@/assets/LogoIcon.svg?react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function LandingNavBar() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function LandingNavBar() {
         </p>
       </div>
       <div className="flex items-center gap-1 sm:gap-3">
+        <ThemeToggle />
         <Button
           type="button"
           variant="ghost"

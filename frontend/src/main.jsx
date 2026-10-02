@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "./app/styles/globals.css";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
@@ -18,32 +19,34 @@ import NotFoundPage from "./pages/NotFoundPage";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <TooltipProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route element={<ProtectedRoute />}>
-              <Route element={<AuthenticatedLayout />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/subscriptions" element={<SubscriptionPage />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AuthenticatedLayout />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/subscriptions" element={<SubscriptionPage />} />
 
-                <Route
-                  path="/subscriptions/add"
-                  element={<AddSubscriptionPage />}
-                />
-                <Route
-                  path="/subscriptions/:id/edit"
-                  element={<EditSubscriptionPage />}
-                />
+                  <Route
+                    path="/subscriptions/add"
+                    element={<AddSubscriptionPage />}
+                  />
+                  <Route
+                    path="/subscriptions/:id/edit"
+                    element={<EditSubscriptionPage />}
+                  />
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </ThemeProvider>
     </TooltipProvider>
   </StrictMode>,
 );
